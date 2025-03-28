@@ -1,0 +1,20 @@
+{
+  "name": "danny-projet-threejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "three": "^0.174.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2"
+  }
+}
