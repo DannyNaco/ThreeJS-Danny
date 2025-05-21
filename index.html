@@ -5,13 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Danny Dribble Game</title>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="menu">
     <h1>Danny Dribble Game</h1>
-    <button id="startBtn">Démarrer</button>
-    <p id="message"></p>
+    
+    <div id="settings">
+        <h3>Paramètres de la partie</h3>
+        <div class="setting-row">
+            <label for="enemySpeed">Vitesse des ennemis :</label>
+            <input type="number" step="0.01" id="enemySpeed" value="0.15" min="0.05" max="0.5" />
+        </div>
+        
+        <div class="setting-row">
+            <label for="playerSpeed">Vitesse du joueur :</label>
+            <input type="number" step="0.01" id="playerSpeed" value="0.2" min="0.1" max="0.5" />
+        </div>
+        
+        <div class="setting-row">
+            <label for="startEnemies">Nombre d'ennemis au départ :</label>
+            <input type="number" id="startEnemies" value="1" min="1" max="10" />
+        </div>
+    </div>
+    
+    <button id="startBtn">Start Game</button>
+    <div id="message"></div>
 </div>
+
+
+
+<button id="logout-btn" style="position: absolute; top: 10px; right: 10px; z-index: 1000; display: none;">
+  Déconnexion
+</button>
+
+
+<div id="auth-container">
+  <div id="auth-forms">
+    <div id="login-form">
+      <h2>Connexion</h2>
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Mot de passe" required />
+      <button id="login-btn">Se connecter</button>
+      <p>Pas de compte ? <a href="#" id="go-register">S'inscrire</a></p>
+    </div>
+
+    <div id="register-form" style="display: none;">
+      <h2>Inscription</h2>
+      <input type="text" id="register-firstname" placeholder="Prénom" required />
+      <input type="text" id="register-lastname" placeholder="Nom" required />
+      <input type="email" id="register-email" placeholder="Email" required />
+      <input type="password" id="register-password" placeholder="Mot de passe" required />
+      <button id="register-btn">Créer un compte</button>
+      <p>Déjà inscrit ? <a href="#" id="go-login">Connexion</a></p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-success" style="display: none;">
+  <div class="modal-content">
+    <p id="modal-message">Connexion réussie !</p>
+    <button onclick="document.getElementById('modal-success').style.display='none'">Fermer</button>
+  </div>
+</div>
+
 <script type="module" src="./main.js"></script>
 </body>
 </html>

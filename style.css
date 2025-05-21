@@ -2,36 +2,272 @@ body, html {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
 }
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
+
 #menu {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.9);
-    color: white;
+    background: rgba(0,0,0,0.85);
+    color: #00ffaa;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     z-index: 10;
+    text-shadow: 0 0 10px #00ffaa;
+    backdrop-filter: blur(5px);
 }
+
+#menu h1 {
+    font-size: 4rem;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #00ffaa, 0 0 20px #00ffaa; }
+    to { text-shadow: 0 0 20px #00ffaa, 0 0 30px #00ffaa, 0 0 40px #00ffaa; }
+}
+
 #startBtn {
-    padding: 10px 20px;
-    font-size: 18px;
-    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 22px;
+    margin-top: 30px;
     cursor: pointer;
+    background: transparent;
+    color: #00ffaa;
+    border: 2px solid #00ffaa;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+    font-family: 'Orbitron', sans-serif;
 }
+
+#startBtn:hover {
+    background: #00ffaa;
+    color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0, 255, 170, 0.8);
+}
+
 #message {
+    margin-top: 30px;
+    font-size: 24px;
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+}
+
+#auth-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(15, 15, 35, 0.9);
+    width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    z-index: 999;
+    border: 2px solid #00ffaa;
+    box-shadow: 0 0 25px rgba(0, 255, 170, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+#auth-forms h2 {
+    color: #00ffaa;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+}
+
+#auth-forms input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    padding: 15px;
+    border-radius: 50px;
+    border: 2px solid rgba(0, 255, 170, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#auth-forms input:focus {
+    border-color: #00ffaa;
+    box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+}
+
+#auth-forms button {
+    padding: 15px;
+    width: 100%;
+    background: linear-gradient(45deg, #00b09b, #00ffaa);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+#auth-forms button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 255, 170, 0.4);
+}
+
+#auth-forms a {
+    color: #00ffaa;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+#auth-forms a:hover {
+    text-shadow: 0 0 8px rgba(0, 255, 170, 0.8);
+}
+
+#auth-forms p {
+    text-align: center;
     margin-top: 20px;
+}
+
+#modal-success {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: rgba(15, 15, 35, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    color: #00ffaa;
+    text-align: center;
+    border: 2px solid #00ffaa;
+    box-shadow: 0 0 30px rgba(0, 255, 170, 0.7);
+    max-width: 400px;
+    width: 100%;
+}
+
+.modal-content p {
     font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.modal-content button {
+    padding: 12px 25px;
+    background: transparent;
+    color: #00ffaa;
+    border: 2px solid #00ffaa;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background: #00ffaa;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 170, 0.6);
+}
+
+
+#settings {
+    position: relative;
+    background: rgba(15, 15, 35, 0.8);
+    padding: 20px;
+    margin: 20px auto 0;
+    border-radius: 15px;
+    color: #00ffaa;
+    z-index: 9;
+    border: 1px solid #00ffaa;
+    box-shadow: 0 0 15px rgba(0, 255, 170, 0.4);
+    text-align: center;
+    width: 350px;
+    backdrop-filter: blur(5px);
+    max-width: 90%;
+}
+
+#settings h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 255, 170, 0.5);
+}
+
+#settings .setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#settings label {
+    text-align: left;
+    margin-right: 15px;
+    flex: 2;
+}
+
+#settings input {
+    width: 80px;
+    padding: 8px 15px;
+    border-radius: 50px;
+    border: 2px solid rgba(0, 255, 170, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+#settings input:focus {
+    border-color: #00ffaa;
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+    outline: none;
+}
+
+
+#logout-btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #ff5f6d, #ffc371);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 95, 109, 0.4);
+}
+
+#logout-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 95, 109, 0.6);
 }
