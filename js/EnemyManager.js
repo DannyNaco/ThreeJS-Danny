@@ -7,7 +7,7 @@ class EnemyManager {
   constructor(scene) {
     this.scene = scene;
     this.enemies = [];
-    this.enemySpeed = 0.15;
+    this.enemySpeed = 0.13;
     this.startEnemiesCount = 1;
   }
   

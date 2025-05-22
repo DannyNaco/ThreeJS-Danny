@@ -30,10 +30,20 @@
     </div>
     
     <button id="startBtn">Start Game</button>
+
+    <div class="stats-buttons logged-in-only">
+        <button id="statsBtn" class="secondary-btn">
+            <i class="stats-icon">📊</i> Mes Stats
+        </button>
+        <button id="leaderboardBtn" class="secondary-btn">
+            <i class="trophy-icon">🏆</i> Leaderboard
+        </button>
+    </div>
+     
     <div id="message"></div>
 </div>
 
-
+ 
 
 <button id="logout-btn" style="position: absolute; top: 10px; right: 10px; z-index: 1000; display: none;">
   Déconnexion
@@ -67,6 +77,41 @@
     <p id="modal-message">Connexion réussie !</p>
     <button onclick="document.getElementById('modal-success').style.display='none'">Fermer</button>
   </div>
+</div>
+
+
+<!-- Modal pour les statistiques -->
+<div id="stats-modal">
+    <div class="modal-large">
+        <div class="modal-header">
+            <h2>Mes Statistiques</h2>
+            <button class="close-modal" onclick="document.getElementById('stats-modal').style.display='none'">×</button>
+        </div>
+        <div class="stats-content">
+            <!-- Le contenu sera chargé dynamiquement -->
+            <div id="stats-loading">Chargement des statistiques...</div>
+            <div id="stats-data" style="display:none;">
+                <!-- Les données seront injectées ici -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour le leaderboard -->
+<div id="leaderboard-modal">
+    <div class="modal-large">
+        <div class="modal-header">
+            <h2>Leaderboard</h2>
+            <button class="close-modal" onclick="document.getElementById('leaderboard-modal').style.display='none'">×</button>
+        </div>
+        <div class="leaderboard-content">
+            <!-- Le contenu sera chargé dynamiquement -->
+            <div id="leaderboard-loading">Chargement du classement...</div>
+            <div id="leaderboard-data" style="display:none;">
+                <!-- Les données seront injectées ici -->
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="module" src="./main.js"></script>

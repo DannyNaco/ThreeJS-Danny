@@ -8,7 +8,7 @@ import api from './ApiClient.js';
 let scene, camera, renderer;
 let player, enemies = [];
 let isGameRunning = false;
-let enemySpeed = 0.15;
+let enemySpeed = 0.13;
 let playerSpeed = 0.2;
 let startEnemiesCount = 1;
 let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
@@ -25,7 +25,7 @@ let gameStartTime;
 // Ces constantes remplacent l'import GAME_SETTINGS
 const GAME_SETTINGS = {
   DEFAULTS: {
-    ENEMY_SPEED: 0.15,
+    ENEMY_SPEED: 0.13,
     PLAYER_SPEED: 0.2,
     ENEMIES_COUNT: 1
   },
@@ -112,7 +112,10 @@ async function init() {
   }
   
   document.getElementById("logout-btn").style.display = api.isAuthenticated() ? "block" : "none";
-  
+
+    // Mettre à jour l'interface en fonction de l'état d'authentification
+  updateAuthUI();
+
   // Event listeners
   window.addEventListener('resize', onWindowResize);
   document.addEventListener('keydown', onKeyDown);
@@ -318,6 +321,165 @@ function endGame() {
     .catch(e => console.error('Erreur sauvegarde jeu :', e));
 }
 
+// Fonction pour mettre à jour l'interface en fonction de l'état d'authentification
+function updateAuthUI() {
+  const isLoggedIn = api.isAuthenticated();
+  
+  // Gérer l'affichage des éléments réservés aux utilisateurs connectés
+  const loggedInOnlyElements = document.querySelectorAll('.logged-in-only');
+  loggedInOnlyElements.forEach(el => {
+    el.style.display = isLoggedIn ? 'flex' : 'none';
+  });
+  
+  // Gérer l'affichage des formulaires d'authentification
+  document.getElementById("auth-container").style.display = isLoggedIn ? "none" : "block";
+  
+  // Gérer l'affichage du bouton de déconnexion
+  document.getElementById("logout-btn").style.display = isLoggedIn ? "block" : "none";
+}
+
+// Fonction pour afficher les statistiques
+function displayStats(stats) {
+    const statsData = document.getElementById('stats-data');
+    
+    console.log("Données de stats reçues:", stats); // Pour déboguer
+    
+    // Vérifier si les données existent
+    if (!stats) {
+        statsData.innerHTML = `<p class="error">Aucune donnée de statistiques disponible.</p>`;
+        statsData.style.display = 'block';
+        return;
+    }
+    
+    // Format de l'API: stats contient directement les propriétés bestScore et totalGamesPlayed
+    statsData.innerHTML = `
+        <div class="stats-summary">
+            <h3>Résumé</h3>
+            <table class="data-table">
+                <tr>
+                    <th>Parties jouées</th>
+                    <td>${stats.totalGamesPlayed || stats.gamesPlayed || 0}</td>
+                </tr>
+                <tr>
+                    <th>Meilleur score</th>
+                    <td class="highlight">${stats.bestScore || 0}</td>
+                </tr>
+                ${stats.averageScore ? `
+                <tr>
+                    <th>Score moyen</th>
+                    <td>${stats.averageScore}</td>
+                </tr>` : ''}
+                ${stats.totalPlayTime ? `
+                <tr>
+                    <th>Temps de jeu total</th>
+                    <td>${formatTime(stats.totalPlayTime)}</td>
+                </tr>` : ''}
+                ${stats.maxWave ? `
+                <tr>
+                    <th>Vague maximum atteinte</th>
+                    <td class="highlight">${stats.maxWave}</td>
+                </tr>` : ''}
+            </table>
+        </div>
+        
+        ${stats.gameHistory && Array.isArray(stats.gameHistory) && stats.gameHistory.length > 0 ? `
+            <h3>Historique des parties</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Score</th>
+                        <th>Vague</th>
+                        <th>Durée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${stats.gameHistory.map(game => `
+                        <tr>
+                            <td>${game.date ? new Date(game.date).toLocaleDateString() : 'N/A'}</td>
+                            <td>${game.score || 0}</td>
+                            <td>${game.waveReached || 0}</td>
+                            <td>${formatTime(game.duration || 0)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        ` : ''}
+    `;
+    
+    statsData.style.display = 'block';
+}
+
+// Fonction pour afficher le leaderboard
+function displayLeaderboard(leaderboard) {
+    const leaderboardData = document.getElementById('leaderboard-data');
+    const currentUserEmail = localStorage.getItem('email');
+    
+    console.log("Données du leaderboard reçues:", leaderboard); // Pour déboguer
+    
+    // Si leaderboard est undefined ou null, initialiser comme tableau vide
+    if (!leaderboard) leaderboard = [];
+    
+    // Si leaderboard n'est pas un tableau mais a des propriétés numériques (comme un objet avec indices)
+    // le convertir en tableau
+    if (!Array.isArray(leaderboard) && typeof leaderboard === 'object') {
+        const tempArray = [];
+        for (let key in leaderboard) {
+            if (!isNaN(parseInt(key)) && leaderboard[key] && typeof leaderboard[key] === 'object') {
+                tempArray.push(leaderboard[key]);
+            }
+        }
+        if (tempArray.length > 0) {
+            leaderboard = tempArray;
+        }
+    }
+    
+    if (!Array.isArray(leaderboard) || leaderboard.length === 0) {
+        leaderboardData.innerHTML = `
+            <p class="no-data">Aucune donnée disponible dans le classement.</p>
+        `;
+        leaderboardData.style.display = 'block';
+        return;
+    }
+    
+    leaderboardData.innerHTML = `
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Joueur</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${leaderboard.map((entry, index) => `
+                    <tr ${entry.email === currentUserEmail ? 'class="highlight"' : ''}>
+                        <td>${index + 1}</td>
+                        <td>${entry.firstName || ''} ${entry.lastName || ''}</td>
+                        <td>${entry.bestScore || entry.score || 0}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+    
+    leaderboardData.style.display = 'block';
+}
+
+// Fonction utilitaire pour formater le temps en heures:minutes:secondes
+function formatTime(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    
+    const parts = [];
+    if (hrs > 0) parts.push(`${hrs}h`);
+    if (mins > 0) parts.push(`${mins}m`);
+    parts.push(`${secs}s`);
+    
+    return parts.join(' ');
+}
+
 // Initialize game
 init().then(() => {
   animate();
@@ -345,6 +507,7 @@ document.getElementById("login-btn").onclick = async () => {
     await api.login(email, password);
     document.getElementById("auth-container").style.display = "none";
     showSuccess("Connexion réussie !");
+    updateAuthUI();
   } catch (e) {
     alert(e.message);
   }
@@ -374,6 +537,68 @@ function showSuccess(message) {
 
 document.getElementById("logout-btn").addEventListener("click", () => {
   api.logout();
+  updateAuthUI();
   document.getElementById("logout-btn").style.display = "none";
   document.getElementById("auth-container").style.display = "block";
+});
+
+// Gestionnaires d'événements pour les boutons
+document.getElementById('statsBtn').addEventListener('click', async () => {
+    if (!api.isAuthenticated()) {
+        alert("Veuillez vous connecter pour voir vos statistiques.");
+        return;
+    }
+    
+    document.getElementById('stats-modal').style.display = 'flex';
+    document.getElementById('stats-loading').style.display = 'block';
+    document.getElementById('stats-data').style.display = 'none';
+    
+    try {
+        const stats = await api.getStats();
+        displayStats(stats);
+    } catch (error) {
+        document.getElementById('stats-data').innerHTML = `<p class="error">Erreur lors du chargement des statistiques: ${error.message}</p>`;
+        document.getElementById('stats-data').style.display = 'block';
+    }
+    
+    document.getElementById('stats-loading').style.display = 'none';
+});
+
+document.getElementById('leaderboardBtn').addEventListener('click', async () => {
+    document.getElementById('leaderboard-modal').style.display = 'flex';
+    document.getElementById('leaderboard-loading').style.display = 'block';
+    document.getElementById('leaderboard-data').style.display = 'none';
+    
+    try {
+        let leaderboard = await api.getLeaderboard();
+        console.log("Réponse brute de l'API:", leaderboard); // Pour déboguer
+        
+        // Si leaderboard n'est pas un tableau, essayer de trouver les données à l'intérieur
+        if (leaderboard && !Array.isArray(leaderboard)) {
+            // Essayer de trouver un tableau dans les propriétés de l'objet
+            for (const key in leaderboard) {
+                if (Array.isArray(leaderboard[key])) {
+                    leaderboard = leaderboard[key];
+                    break;
+                }
+            }
+            
+            // Si toujours pas un tableau, créer un tableau vide
+            if (!Array.isArray(leaderboard)) {
+                console.error("Format de données inattendu:", leaderboard);
+                leaderboard = [];
+            }
+        }
+        
+        displayLeaderboard(leaderboard);
+    } catch (error) {
+        console.error("Erreur complète:", error);
+        document.getElementById('leaderboard-data').innerHTML = `
+            <p class="error">Erreur lors du chargement du classement: ${error.message}</p>
+            <p>Détails: ${error}</p>
+        `;
+        document.getElementById('leaderboard-data').style.display = 'block';
+    }
+    
+    document.getElementById('leaderboard-loading').style.display = 'none';
 });

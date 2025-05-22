@@ -271,3 +271,162 @@ body, html {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(255, 95, 109, 0.6);
 }
+
+/* Styles pour les boutons de statistiques */
+.stats-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+    justify-content: center;
+}
+
+.secondary-btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    color: #00ffaa;
+    border: 2px solid #00ffaa;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+}
+
+.secondary-btn:hover {
+    background: rgba(0, 255, 170, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+}
+
+.secondary-btn:active {
+    transform: translateY(0);
+}
+
+.stats-icon, .trophy-icon {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Styles pour les fenêtres modales de stats et leaderboard */
+#stats-modal, #leaderboard-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.modal-large {
+    background: rgba(15, 15, 35, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid #00ffaa;
+    box-shadow: 0 0 30px rgba(0, 255, 170, 0.7);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+}
+
+.modal-large h2 {
+    color: #00ffaa;
+    margin: 0;
+    font-size: 28px;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
+    color: #00ffaa;
+}
+
+.stats-content, .leaderboard-content {
+    color: white;
+}
+
+/* Style pour les tableaux de données */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+}
+
+.data-table th {
+    background-color: rgba(0, 255, 170, 0.1);
+    color: #00ffaa;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.data-table tr:hover {
+    background-color: rgba(0, 255, 170, 0.05);
+}
+
+.data-table .highlight {
+    color: #00ffaa;
+    font-weight: bold;
+}
+
+/* Animation pour l'affichage des modales */
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-large {
+    animation: modalFadeIn 0.3s ease;
+}
+
+.error {
+    color: #ff5f6d;
+    padding: 15px;
+    background: rgba(255, 95, 109, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 95, 109, 0.3);
+    text-align: center;
+    margin: 20px 0;
+}
+
+.no-data {
+    text-align: center;
+    color: #aaa;
+    padding: 20px;
+    font-style: italic;
+}
